@@ -1,0 +1,97 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+a:focus {
+  outline: none;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+input[type="submit"], button {
+  cursor: pointer;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a, a:active, a:hover, a:visited {
+  text-decoration: none;
+}
+
+.mash-display {
+  zoom: 1;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.mash-display:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  font-size: 0;
+  visibility: hidden;
+}
+.mash-display.mashed {
+  background: #ccc;
+}
+
+.media-content {
+  width: 47.5%;
+  height: 100%;
+  overflow: hidden;
+}
+.media-content.media-1 {
+  float: left;
+}
+.media-content.media-2 {
+  float: right;
+}
+.media-content.mash-winner {
+  background: rgba(0, 128, 0, 0.2);
+}
+.media-content.mash-losers {
+  background: rgba(255, 0, 0, 0.2);
+}

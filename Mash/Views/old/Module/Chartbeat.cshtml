@@ -1,0 +1,22 @@
+@using ApiWrappers
+@using Mash.Models
+@model PublisherModel
+
+@{var url = ChartbeatWrapper.BuildChartbeatQuickStatsUrl(Model.Url);}
+
+<div class="chartbeat-label">Current Visitors on @Model.Url</div>
+<div id="chartbeat-visitors-widget"></div>
+<div id="chartbeat-referrer-widget"></div>
+
+<script type='text/javascript'>
+    (function () {
+        var config = {
+            'api': '@url',
+            'element': 'chartbeat-visitors-widget'
+        };
+
+        new SiteTotal(config);
+        //new referrerwidget("c5b570aa516dbf7438a2b44b95b61b9b", "chartbeat-referrer-widget", "", null, '@Model.Url');
+    })();
+</script>
+

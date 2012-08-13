@@ -1,0 +1,32 @@
+﻿@model IEnumerable<MashViewModel>
+@{
+	Layout = "../_LayoutMash.cshtml";
+
+	foreach (var m in Model)
+	{
+		Html.RenderPartial("_Mash", m);
+	}
+}
+
+@section Scripts
+{
+	<script src="/Content/scripts/jquery.min.js"></script>
+	<script src="/Content/scripts/mash.js"></script>
+	<script src="/Content/scripts/jquery.infinitescroll.js"></script>
+	<script type="text/javascript">
+		var mashOptions = {
+		}, isOptions = {
+			debug: true,
+			itemSelector: ".mash-display", // selector for all items you'll retrieve
+			navSelector: "div.navigation", // selector for the paged navigation (it will be hidden)
+			nextSelector: "div.navigation a:first", // selector for the NEXT link (to page 2)
+			pathParse: function(path) { return [path]; }
+		};
+
+		$(document).mash(mashOptions);
+		$('#mashes').infinitescroll(isOptions, function (elements, options) {
+			var $media = $(elements).find(".media");
+			$media.trigger("mashSetup");
+		});
+	</script>
+}

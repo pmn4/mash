@@ -1,0 +1,14 @@
+@using Mash.Models
+@model IEnumerable<OfferPerformanceModel>
+
+@{
+	Layout = null;
+}
+
+<ul id="offers">
+@foreach (var offer in Model.OrderBy(o => o.Publisher.Name))
+{
+	var heatindexClassname = string.Format("heat-index-{0}", Math.Round( 10.0*offer.NumberSold/offer.MaxQuantity ) * 10 );
+	<li class="ticker-item publisher-@offer.Publisher.Name.ToLower().Replace(' ', '-') @heatindexClassname">@offer.OfferTitle <span>(@offer.NumberSold sold of @offer.MaxQuantity)</span></li>
+}
+</ul>

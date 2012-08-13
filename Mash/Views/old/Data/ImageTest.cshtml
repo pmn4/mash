@@ -1,0 +1,12 @@
+@model System.Collections.Generic.IEnumerable<Mash.Models.PublisherModel>
+
+@{
+	Layout = null;
+}
+
+@foreach (var myModel in Model)
+{
+    <div>
+		<text><img src="@myModel.IconUrl" width="50" height="50"/></text>
+    </div>
+}

@@ -1,0 +1,23 @@
+﻿@model MashViewModel
+		   
+@{
+	var i = 0;
+}
+
+@using (Html.BeginForm("Mash", "Mash")){
+<div class="mash-display">
+	@foreach (var m in Model.Media)
+	{
+		@Html.HiddenFor(x => x.Media[i].MediaId)
+		@Html.HiddenFor(x => x.Media[i].Name)
+		@Html.HiddenFor(x => x.Media[i].Type)
+		@Html.HiddenFor(x => x.Media[i].Url)
+		<div id="media-@Model.MashId-@m.MediaId" class="media-content media-@(++i)">
+			@Html.Partial("_Media", m)
+		</div>
+	}
+	<div class="actions">
+		@Html.CheckBoxFor(x => x.Same) Images are the same?
+	</div>
+</div>
+}

@@ -1,0 +1,17 @@
+﻿@model MediaViewModel
+
+<div class="media-type-@Model.Type.ToLower()">
+	@switch (Model.Type)
+	{
+		case "image":
+			var url = HttpUtility.UrlEncode(Model.Url);
+			<img class="media" src="fetch/image?@ContentController.UrlTokenPath=@url" alt="@Model.Name" height="200"/>
+			@*<img class="media" src="@url" alt="@Model.Name"/>*@
+			break;
+		default:
+			<h6>Unrecognized media type: @Model.Type</h6>
+			break;
+	}
+	
+	<button type="submit" name="ChoiceMediaId" value="@Model.MediaId">Pick This</button>
+</div>

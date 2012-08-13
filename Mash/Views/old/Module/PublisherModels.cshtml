@@ -1,0 +1,11 @@
+@using Mash.Models
+@model IEnumerable<PublisherModel>
+
+@{
+	Layout = null;
+}
+
+@foreach (var pub in Model)
+{
+	<div class="publisher publisher-@pub.Name.ToLower().Replace(' ', '-')"><img src="@pub.IconUrl" width="50" alt="@Html.AttributeEncode(pub.Name)"/>@pub.Name</div>
+}

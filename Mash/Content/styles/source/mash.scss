@@ -1,0 +1,35 @@
+@import "_reset",
+        "_mixins";
+
+.mash-display {
+	@include clearfix;
+
+	width: 100%;
+	height: 100%;
+	text-align: center;
+
+	&.mashed {
+		background: #ccc;
+	}
+}
+.media-content {
+	width: 47.5%;
+	height: 100%;
+	overflow: hidden;
+
+	&.media-1 {
+		float: left;
+	}
+
+	&.media-2 {
+		float: right;
+	}
+
+	&.mash-winner {
+		background: rgba(green, 0.2);
+	}
+
+	&.mash-losers {
+		background: rgba(red, 0.2);
+	}
+}
