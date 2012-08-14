@@ -13,6 +13,7 @@
 
 ;(function($, document, window, undefined) {
 	var CONSTANTS = {
+		DATAKEY_OPTION: '__mash_options',
 		DATAKEY_MEDIA: '$media'
 	};
 
@@ -30,24 +31,38 @@
 
 	$.fn.mash.defaults = {
 		debug: true,
+		leaderboardSelector: "#leaderboard",
+		leaderboardUrl: "/leaderboard/",
+		leaderboardCount: 10,
+		leaderboardItemSelector: ".leader-media",
 		mashSelector: ".mash-display",
-		mediaWrapper: ".media-content",
+		mediaWrapper: ".media-wrapper",
 		mediaSelector: ".media",
+		sameSelector: ".same-media",
 		submitButton: "input[type='submit'], button[type='submit']",
+		mediaDisplay: function($media){
+
+		},
+		mediaChooseCallback: function($mash, $winner, $losers, options){
+
+		},
 		completeClassname: "mashed",    // gets added to mashSelector when complete
 		winnerClassname: "mash-winner", // gets added to the winning mediaSelector
-		losersClassname: "mash-losers"  // gets added to all losing mediaSelector(s)
+		losersClassname: "mash-losers",  // gets added to all losing mediaSelector(s)
+		activeMashClass: "active-mash",
+
 	};
 
 	var methods = {
 		init: function(options) {
 			var options = $.extend({}, $.fn.mash.defaults, options);
 			
-			return this.each(function() {
+			var r = this.each(function() {
 				// Set up basic vars
 				var o = options,
 				    $this = $(this);
 
+				$(this).data(CONSTANTS.DATAKEY_OPTION, o);
 				// Start Plugin here
 				$this.on({
 					click: function(){
@@ -56,28 +71,13 @@
 				}, o.mediaWrapper);
 				$this.on({
 					mashSetup: function(){
-						var $this = $(this),
-						    portrait = $this.height() > $this.width()
-						    $parent = $this.closest(o.mashSelector),
-						    $window = $(window),
-						    containerWidth = $window.width(),
-						    mediaWidth = Math.min(containerWidth * 0.9/2), // should check to see how many media items there are...
-						    containerHeight = $window.height(),
-						    mediaMax = Math.min(mediaWidth, containerHeight);
-
-						$this.css({
-							"max-width": mediaMax + "px",
-							"max-height": mediaMax + "px",
-							width: "auto",
-							height: "auto"
-						}).parent().css({
-							width: mediaMax + "px",
-							height: mediaMax + "px"
-						});
+						if(o.mediaDisplay && typeof o.mediaDisplay === 'function'){
+							o.mediaDisplay($(this));
+						}
 					}
 				}, o.mediaSelector);
 				$this.on({
-					click :function(e){
+					click: function(e){
 						var $this = $(this),
 						    $form = $this.closest("form"),
 						    formData = $form.serialize() || "";
@@ -103,14 +103,76 @@
 								$winner.addClass(o.winnerClassname);
 								$losers.addClass(o.losersClassname);
 								$mash.addClass(o.completeClassname);
+
+								var $allMashes = $(o.mashSelector),
+								    mashInx = $allMashes.index($mash),
+								    $nextMash = $allMashes.eq(mashInx+1);
+
+								$allMashes.removeClass(o.activeMashClass);
+								$nextMash.addClass(o.activeMashClass);
+
+								if(typeof o.mediaChooseCallback === "function"){
+									o.mediaChooseCallback($mash, $winner, $losers, o);
+								}
 							}
 						});
 
 						return false;
 					}
 				}, o.submitButton);
+				var $getActiveMash = function(){
+					return $(o.mashSelector + "." + o.activeMashClass + ":first");
+				};
+				var keystrokeSelect = function(isLeft){
+					var $activeMash = $getActiveMash(),
+					    $submits = $(o.submitButton, $activeMash);
+
+					if($submits.length < 2) return;
+
+					if(isLeft)
+						$submits.first().trigger("click");
+					else
+						$submits.last().trigger("click");
+				}
+				var toggleSame = function(){
+					var $activeMash = $getActiveMash(),
+					    $same = $(o.sameSelector, $activeMash);
+
+					$same.prop("checked", !$same.prop("checked"));
+				};
+				$this.on({
+					keyup: function(e){
+						switch(e.keyCode){
+							case 32: //space
+								toggleSame();
+								e.stopPropagation();
+								return false;
+								break;
+							case 37: //left
+								keystrokeSelect(true);
+								e.stopPropagation();
+								break;
+							case 39: //right
+								keystrokeSelect(false);
+								e.stopPropagation();
+								break;
+						}
+					}
+				});
 
 				$(o.mediaSelector, $this).trigger("mashSetup"); // since these have probably already loadaed
+				$(o.mashSelector, $this).removeClass(o.activeMashClass).first().addClass(o.activeMashClass);
+			});
+
+			this.mash("leaderboard");
+			return r;
+		},
+		leaderboard: function(){
+			return this.each(function() {
+				// Set up basic vars
+				var $this = $(this),
+				    o = $this.data(CONSTANTS.DATAKEY_OPTION);
+				$(o.leaderboardSelector).empty().load(o.leaderboardUrl + o.leaderboardCount);
 			});
 		}
 	};

@@ -17,6 +17,10 @@ namespace Mash
 
 		public List<TagViewModel> Tags { get; set; }
 
+		public decimal? CurrentRating { get; set; }
+		public decimal? Rating { get; set; }
+		public string RatingType { get; set; }
+
 		public object Content { get; internal set; }
 		public object DataJson { get; internal set; }
 	}

@@ -14,19 +14,53 @@
 	<script src="/Content/scripts/mash.js"></script>
 	<script src="/Content/scripts/jquery.infinitescroll.js"></script>
 	<script type="text/javascript">
-		var mashOptions = {
-		}, isOptions = {
-			debug: true,
-			itemSelector: ".mash-display", // selector for all items you'll retrieve
-			navSelector: "div.navigation", // selector for the paged navigation (it will be hidden)
-			nextSelector: "div.navigation a:first", // selector for the NEXT link (to page 2)
-			pathParse: function(path) { return [path]; }
-		};
+		$(function () {
+			var mashCounter = 0,
+			    mashOptions = {
+			    	mediaDisplay: function ($media) {
+			    		var $this = $media,
+					    $window = $(window),
+					    containerWidth = $window.width(),
+					    mediaWidth = Math.min(containerWidth * 0.9 / 2), // should check to see how many media items there are...
+					    containerHeight = $window.height(),
+					    mediaMax = Math.min(mediaWidth, containerHeight);
 
-		$(document).mash(mashOptions);
-		$('#mashes').infinitescroll(isOptions, function (elements, options) {
-			var $media = $(elements).find(".media");
-			$media.trigger("mashSetup");
+			    		$this.css({
+			    			"max-width": mediaMax + "px",
+			    			"max-height": mediaMax + "px",
+			    			width: "auto",
+			    			height: "auto"
+			    		}).parent().css({
+			    			width: mediaMax + "px",
+			    			height: mediaMax + "px"
+			    		});
+			    	},
+			    	mediaChooseCallback: function ($mash, $winner, $losers, options) {
+			    		var $allMashes = $(options.mashSelector),
+								    mashInx = $allMashes.index($mash),
+								    $nextMash = $allMashes.eq(mashInx + 1);
+			    		mashCounter++;
+			    		if (mashCounter % 10 >= 8)
+			    			$(window).trigger('scroll'); // trigger infinite scroll		
+			    		if (mashCounter % 10 < 1)
+			    			$(document).mash("leaderboard");
+			    	},
+			    	leaderboardSelector: "#leader-ledge .leaderboard"
+			    }, isOptions = {
+			    	animated: false,
+			    	itemSelector: ".mash-display", // selector for all items you'll retrieve
+			    	loadingImage: null,
+			    	loadingText: null,
+			    	navSelector: "div.navigation", // selector for the paged navigation (it will be hidden)
+			    	nextSelector: "div.navigation a:first", // selector for the NEXT link (to page 2)
+			    	pathParse: function (path) { return [path]; }
+			    };
+
+			$(document).mash(mashOptions);
+			$("#mashes").infinitescroll(isOptions, function (elements, options) {
+				var $media = $(elements).find(".media");
+				$media.trigger("mashSetup");
+			});
 		});
 	</script>
 }

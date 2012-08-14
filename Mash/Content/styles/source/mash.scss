@@ -1,21 +1,131 @@
-@import "_reset",
-        "_mixins";
+@import
+	"_reset",
+	"_mixins";
+@import
+	"compass/support",
+	"compass/css3/background-size",
+	"compass/css3/border-radius",
+	"compass/css3/box-shadow",
+	"compass/css3/images",
+	"compass/css3/opacity",
+	"compass/css3/text-shadow",
+	"compass/css3/transform",
+	"compass/css3/transition",
+	"compass/typography/text/replacement",
+	"compass/utilities/color/contrast",
+	"compass/utilities/sprites";
+
+$default-spacing: 10px;
+
+$color-border: #ccc;
+$color-bg: #333;
+$color-bg-top: $color-bg;
+$color-bg-bottom: adjust-lightness($color-bg-top, -20%);
+$color-bg-winning: rgba(green, 0.5);
+$color-bg-losing: rgba(red, 0.5);
+$color-leader-ledge-front: adjust-lightness($color-bg, -15%);
+$color-leader-ledge-back: adjust-lightness($color-leader-ledge-front, -10%);
+$color-navbar: $color-bg;
+$color-navbar-top: adjust-lightness($color-navbar, 15%);
+$color-navbar-bottom: adjust-lightness($color-navbar, 10%);
+
+$height-navbar: 10%;
+$height-leader-ledge: 10%;
+
+html, body {
+	height: 100%;
+}
+html {
+	@include background-image(linear-gradient($color-bg-top, $color-bg-bottom));
+}
+#navbar {
+	position: relative;
+	height: $height-navbar;
+	@include background-image(linear-gradient($color-navbar-top, $color-navbar, $color-navbar-bottom));
+}
+#leader-ledge {
+	position: fixed;
+	bottom: 0;
+	height: $height-leader-ledge;
+	width: 100%;
+	@include background-image(linear-gradient($color-leader-ledge-back, $color-leader-ledge-front));
+
+	.leader-media {
+		margin-bottom: $height-leader-ledge / 4;
+	}
+	.leader-media-shadow {
+		height: 2px;
+		@include single-box-shadow($color-leader-ledge-back, 2px, 2px, 4px);
+	}
+
+	.leaderboard {
+		$media-box: 150px !default;
+		position: absolute;
+		bottom: $default-spacing;
+		white-space: nowrap;
+
+		.leader-media {
+			position: relative;
+			display: inline-block;
+			margin: 0 0 0 $default-spacing;
+			border: $default-spacing/2 solid $color-border;
+
+			img {
+				display: block;
+				max-width: $media-box;
+				max-height: $media-box;
+				height: auto;
+				width: auto;
+			}
+
+			.rank {
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: $default-spacing/2;
+				background: rgba(white, 0.8);
+				font-weight: bold;
+				font-size: 125%;
+				width: $media-box / 8;
+				height: $media-box / 8;
+				line-height: $media-box / 8;
+				text-align: center;
+			}
+			.score {
+				display: none;
+			}
+		}
+	}
+}
+#mashes {
+}
 
 .mash-display {
 	@include clearfix;
+
+	position: absolute;
 
 	width: 100%;
 	height: 100%;
 	text-align: center;
 
+	@include transform-style(preserve-3d);
+	@include single-transition(all, 1.0s, linear);
+	@include rotateX(90deg);
+
+	&.active-mash {
+		@include rotateX(0);
+	}
+
 	&.mashed {
-		background: #ccc;
+		@include rotateX(-90deg);
 	}
 }
-.media-content {
+.media-wrapper {
 	width: 47.5%;
 	height: 100%;
 	overflow: hidden;
+	position: relative;
 
 	&.media-1 {
 		float: left;
@@ -26,10 +136,82 @@
 	}
 
 	&.mash-winner {
-		background: rgba(green, 0.2);
+		img {
+			@include single-box-shadow($color-bg-winning, 0, 0, 4px, 5px);
+		}
 	}
 
 	&.mash-losers {
-		background: rgba(red, 0.2);
+		img {
+			@include single-box-shadow($color-bg-losing, 0, 0, 4px, 5px);
+		}
+	}
+
+	.media-content {
+		margin: 0 auto;
+	}
+	.media {
+		margin: 0 auto;
+	}
+	.actions {
 	}
 }
+
+
+.debug {
+	td {
+		padding: $default-spacing;
+	}
+	.winning {
+		background: $color-bg-winning;
+	}
+	.losing {
+		background: $color-bg-losing;
+	}
+}
+
+/*
+.leaderboard {
+	@include clearfix;
+
+	.leader-media {
+		$media-box: 200px !default;
+
+		position: relative;
+		float: left;
+		margin: 0 0 $default-spacing $default-spacing;
+		height: $media-box;
+		width: $media-box;
+		overflow: hidden;
+		border: $default-spacing/2 solid $color-border;
+
+		img {
+			min-width: $media-box;
+			min-height: $media-box;
+		}
+
+		.rank {
+			position: absolute;
+			top: 0;
+			left: 0;
+			padding: $default-spacing/2;
+			background: rgba(white, 0.8);
+			font-weight: bold;
+			font-size: 125%;
+			width: $media-box / 8;
+			height: $media-box / 8;
+			line-height: $media-box / 8;
+			text-align: center;
+		}
+		.score {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			font-style: italic;
+			background: rgba(white, 0.4);
+			color: rgba(black, 0.8);
+			font-size: 80%;
+		}
+	}
+}
+*/

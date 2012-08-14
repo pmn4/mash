@@ -4,20 +4,24 @@
 	var i = 0;
 }
 
-@using (Html.BeginForm("Mash", "Mash")){
 <div class="mash-display">
-	@foreach (var m in Model.Media)
+@using (Html.BeginForm("Mash", "Mash"))
+{
+	foreach (var m in Model.Media)
 	{
 		@Html.HiddenFor(x => x.Media[i].MediaId)
 		@Html.HiddenFor(x => x.Media[i].Name)
 		@Html.HiddenFor(x => x.Media[i].Type)
 		@Html.HiddenFor(x => x.Media[i].Url)
-		<div id="media-@Model.MashId-@m.MediaId" class="media-content media-@(++i)">
+		<div id="media-@Model.MashId-@m.MediaId" class="media-wrapper media-@(++i)">
 			@Html.Partial("_Media", m)
+			<div class="actions">
+				<button type="submit" name="ChoiceMediaId" value="@m.MediaId">Pick This</button>
+			</div>
 		</div>
 	}
 	<div class="actions">
-		@Html.CheckBoxFor(x => x.Same) Images are the same?
+		@Html.CheckBoxFor(x => x.Same, new {@class = "same-media"}) Images are the same?
 	</div>
-</div>
 }
+</div>

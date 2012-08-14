@@ -4,16 +4,21 @@
 	<title>@(ViewBag.Title ?? "*mash")</title>
 	<link rel="stylesheet" href="/Content/styles/mash.css" />
 </head>
-<body>
-	<div id="mashes">
-		@RenderBody()
+	<body>
+		<div id="navbar">
+			<div class="title">*mash</div>
+			<div class="logo"></div>
+		</div>
+		<div id="mashes">
+			@RenderBody()
 		
-		@Html.Partial("_Navigation_More")
-	</div>
+			@Html.Partial("_Navigation_More")
+		</div>
 	
-	@if (IsSectionDefined("Scripts"))
-	{
-		@RenderSection("Scripts")
-	}
-</body>
+		@if (IsSectionDefined("Scripts"))
+		{
+			@RenderSection("Scripts")
+		}
+		<div id="leader-ledge"><div class="leaderboard"></div></div>
+	</body>
 </html>

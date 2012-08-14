@@ -10,7 +10,7 @@ namespace Mash
 		public const int DefaultCount = 10;
 
 		public int Count { get; set; }
-		public TagViewModel Tag { get; set; }
+		public List<TagViewModel> Tags { get; set; }
 
 		public MashDisplayViewModel()
 		{

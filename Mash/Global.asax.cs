@@ -34,9 +34,21 @@ namespace Mash
 			);
 
 			routes.MapRoute(
+				"Leaderboard",
+				"leaderboard/{count}",
+				new { controller = "Mash", action = "Leaderboard" }
+			);
+
+			routes.MapRoute(
 				"Fetch",
 				"fetch/{type}",
 				new { controller = "Content", action = "Fetch" }
+			);
+
+			routes.MapRoute(
+				"Debug",
+				"debug",
+				new { controller = "Mash", action = "Debug" }
 			);
 
 		}

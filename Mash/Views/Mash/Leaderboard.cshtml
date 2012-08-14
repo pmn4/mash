@@ -1,0 +1,29 @@
+﻿@model List<MediaViewModel>
+
+@helper DisplayLeaderboard(List<MediaViewModel> model) {
+	var rank = 1;
+	foreach (var m in model)
+	{
+		<div class="leader-media">
+			<div class="rank">@(rank++)</div>
+			@Html.Partial("_Media", m)
+			<div class="score">@m.CurrentRating</div>
+		</div>
+	}
+}
+
+@{
+	if (Request.IsAjaxRequest())
+	{
+		@DisplayLeaderboard(Model)
+		return;
+	}
+
+	ViewBag.Title = "Leaderboard";
+	Layout = "../_LayoutMash.cshtml";
+}
+
+<h2>Leaderboard</h2>
+<div class="leaderboard">
+	@DisplayLeaderboard(Model)
+</div>

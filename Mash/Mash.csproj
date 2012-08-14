@@ -63,6 +63,7 @@
     <Reference Include="System.DirectoryServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\EloRatingSystem.cs" />
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\MashController.cs" />
     <Compile Include="DataProvider.cs" />
@@ -114,6 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Mash\_Navigation_More.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mash\Debug.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mash\Leaderboard.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
